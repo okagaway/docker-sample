@@ -1,0 +1,12 @@
+version: '2'
+services:
+  nginx:
+    build: ./nginx
+    # image: ECRのURL ecs-cliで実行する場合は、buildをコメントアウトしてimage（ECRのイメージ）を指定する
+    ports:
+      - "80:80"
+    links:
+        - php-fpm
+  php-fpm:
+    build: ./php-fpm
+    # image: ECRのURL ecs-cliで実行する場合は、buildをコメントアウトしてimage（ECRのイメージ）を指定する
