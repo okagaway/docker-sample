@@ -2,11 +2,22 @@ version: '2'
 services:
   nginx:
     build: ./nginx
-    # image: ECRのURL ecs-cliで実行する場合は、buildをコメントアウトしてimage（ECRのイメージ）を指定する
+    image: ${NGINX_IMAGE}
     ports:
       - "80:80"
     links:
         - php-fpm
+
   php-fpm:
     build: ./php-fpm
-    # image: ECRのURL ecs-cliで実行する場合は、buildをコメントアウトしてimage（ECRのイメージ）を指定する
+    image: ${PHPFPM_IMAGE}
+    volumes:
+      - ./src/:/var/www/html
+#    entrypoint: "php /var/www/html/consumer.php"
+    links:
+      - queue
+
+  queue:
+    image: rabbitmq
+    ports:
+      - 5672:5672
